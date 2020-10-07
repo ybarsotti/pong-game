@@ -5,17 +5,17 @@ import com.jogamp.newt.event.WindowEvent;
 import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLProfile;
+import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.util.FPSAnimator;
-import gameObject.Bastao;
 import input.Teclado;
+import som.Som;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Renderer {
     private static GLWindow window = null;
-
-    public static float janelaW = 0;
-    public static float janelaH = 0;
+    private static Som som;
 
     public static void init(){
         GLProfile.initSingleton();
@@ -27,10 +27,10 @@ public class Renderer {
         window.setTitle("PONG");
         window.setResizable(false);
 
-        Cena cena = new Cena();
+        Scene scene = new Scene();
 
-        window.addGLEventListener(cena);
-        window.addKeyListener(new Teclado(cena));
+        window.addGLEventListener(scene);
+        window.addKeyListener(new Teclado(scene));
         window.requestFocus();
 
         FPSAnimator animator = new FPSAnimator(window, 60);
@@ -44,17 +44,31 @@ public class Renderer {
             }
         });
 
+        // create the cursor
+        Toolkit t = Toolkit.getDefaultToolkit();
+        Image i = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+        Cursor noCursor = t.createCustomCursor(i, new Point(0, 0), "none");
+
+        // try it with a normal frame
+        Frame f = new Frame();
+
+        // create the GLCanvas and add it to the frame
+        GLCanvas canvas = new GLCanvas();
+        f.add(canvas);
+
+        f.setCursor(noCursor);
+        f.setSize(400, 200);
+        f.setVisible(true);
+
         window.setVisible(true);
 
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Dimension size = toolkit.getScreenSize();
-        janelaH = size.height;
-        janelaW = size.width;
-        System.out.println(janelaH);
-        System.out.println(janelaW);
+
+//        new Som().intro("src/sound/intro.wav");
+
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
         init();
+
     }
 }

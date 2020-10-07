@@ -4,14 +4,19 @@ import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.glu.GLU;
-import gameObject.Bastao;
+import objetoJogo.Bastao;
+import objetoJogo.Bola;
+import objetoJogo.Jogador;
 
-public class Cena implements GLEventListener {
+public class Scene implements GLEventListener {
     GLU glu;
 
-    private float xMin, xMax, yMin, yMax, zMin, zMax;
     public Bastao bastao;
+    public Bola bola;
+    public Jogo jogo;
+    public Jogador jogador;
 
+    private float xMin, xMax, yMin, yMax, zMin, zMax;
 
     @Override
     public void init(GLAutoDrawable drawable) {
@@ -20,6 +25,11 @@ public class Cena implements GLEventListener {
         xMax = yMax = zMax = 1;
 
         this.bastao = new Bastao(drawable);
+        this.bola = new Bola(drawable);
+        this.jogador = new Jogador();
+
+        this.jogo = new Jogo(this.bastao, this.bola, this.jogador);
+        this.jogo.jogoIniciado = true;
     }
 
     @Override
@@ -29,8 +39,7 @@ public class Cena implements GLEventListener {
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
         gl.glLoadIdentity();
 
-        // Bastao
-        this.bastao.gerar();
+        this.jogo.jogar();
 
         gl.glFlush();
     }

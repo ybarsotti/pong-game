@@ -1,15 +1,14 @@
 package input;
 
-import cena.Cena;
+import cena.Scene;
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.KeyListener;
-import gameObject.Bastao;
 
 public class Teclado implements KeyListener {
-    private Cena cena;
+    private Scene scene;
 
-    public Teclado(Cena cena) {
-        this.cena = cena;
+    public Teclado(Scene scene) {
+        this.scene = scene;
     }
 
     @Override
@@ -21,10 +20,10 @@ public class Teclado implements KeyListener {
                 System.exit(0);
                 break;
             case KeyEvent.VK_RIGHT:
-                cena.bastao.movimentarParaDireita();
+                this.scene.bastao.movimentarParaDireita();
                 break;
             case KeyEvent.VK_LEFT:
-                cena.bastao.movimentarParaEsquerda();
+                this.scene.bastao.movimentarParaEsquerda();
                 break;
         }
 
